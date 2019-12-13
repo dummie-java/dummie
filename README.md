@@ -1,4 +1,4 @@
-# Welcome to Dummie [![Build Status](https://travis-ci.org/yeyuexia/dummie.svg?branch=master)](https://travis-ci.org/yeyuexia/dummie) 
+# Welcome to Dummie [![Build Status](https://travis-ci.org/dummie-java/dummie.svg?branch=master)](https://travis-ci.org/dummie-java/dummie) 
 
 ### Overview
 
