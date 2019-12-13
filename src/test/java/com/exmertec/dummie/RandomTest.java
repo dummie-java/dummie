@@ -6,6 +6,9 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import org.junit.Test;
 
 public class RandomTest {
@@ -51,17 +54,20 @@ public class RandomTest {
     public void should_return_different_value_when_set_random() throws Exception {
         NestingData3 nestingData3 = prepare(NestingData3.class)
             .random(String.class)
+            .random(ZonedDateTime.class)
             .build();
 
         assertThat(nestingData3, not(nullValue()));
         assertThat(nestingData3.getName(), not(nullValue()));
         assertThat(nestingData3.getDesc(), not(nullValue()));
         assertThat(nestingData3.getDesc(), not(equalTo(nestingData3.getName())));
+        assertThat(nestingData3.getZonedDateTime(), not(nullValue()));
     }
 
     public static class NestingData1 {
         private String name;
         private NestingData2 nestingData2s;
+        private OffsetDateTime offsetDateTime;
 
         public String getName() {
             return name;
@@ -78,11 +84,59 @@ public class RandomTest {
         public void setNestingData2s(NestingData2 nestingData2s) {
             this.nestingData2s = nestingData2s;
         }
+
+        public OffsetDateTime getOffsetDateTime() {
+            return offsetDateTime;
+        }
+
+        public void setOffsetDateTime(OffsetDateTime offsetDateTime) {
+            this.offsetDateTime = offsetDateTime;
+        }
     }
 
     public static class NestingData2 {
         private String desc;
+        private NestingData3 data;
+        private LocalDateTime localDateTime;
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public NestingData3 getData() {
+            return data;
+        }
+
+        public void setData(NestingData3 data) {
+            this.data = data;
+        }
+
+        public LocalDateTime getLocalDateTime() {
+            return localDateTime;
+        }
+
+        public void setLocalDateTime(LocalDateTime localDateTime) {
+            this.localDateTime = localDateTime;
+        }
+    }
+
+    public static class NestingData3 {
+        private String name;
+        private String desc;
         private NestingData1 data;
+        private ZonedDateTime zonedDateTime;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public String getDesc() {
             return desc;
@@ -99,26 +153,13 @@ public class RandomTest {
         public void setData(NestingData1 data) {
             this.data = data;
         }
-    }
 
-    public static class NestingData3 {
-        private String name;
-        private String desc;
-
-        public String getName() {
-            return name;
+        public ZonedDateTime getZonedDateTime() {
+            return zonedDateTime;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
+        public void setZonedDateTime(ZonedDateTime zonedDateTime) {
+            this.zonedDateTime = zonedDateTime;
         }
     }
 }

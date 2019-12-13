@@ -8,6 +8,7 @@ import com.exmertec.dummie.generator.field.impl.BigDecimalFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.BooleanFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.ByteFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.CharacterFieldValueGenerator;
+import com.exmertec.dummie.generator.field.impl.DateTimeFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.DoubleFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.EnumFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.FloatFieldValueGenerator;
@@ -18,7 +19,6 @@ import com.exmertec.dummie.generator.field.impl.MapFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.SetFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.ShortFieldValueGenerator;
 import com.exmertec.dummie.generator.field.impl.StringFieldValueGenerator;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,9 +45,9 @@ public abstract class DataGenerator {
         this.dataCache = dataCache;
         this.strategy = strategy;
 
-        generators = new ArrayList<FieldValueGenerator>();
-        randomFieldKeys = new HashSet<String>();
-        randomFieldType = new HashSet<Class<?>>();
+        generators = new ArrayList<>();
+        randomFieldKeys = new HashSet<>();
+        randomFieldType = new HashSet<>();
 
         addDefaultGenerators();
     }
@@ -67,6 +67,7 @@ public abstract class DataGenerator {
         generators.add(new ShortFieldValueGenerator());
         generators.add(new EnumFieldValueGenerator());
         generators.add(new BigDecimalFieldValueGenerator());
+        generators.add(new DateTimeFieldValueGenerator());
     }
 
     public Object getData(Field field) {
