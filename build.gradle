@@ -2,9 +2,9 @@ apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'java'
 
-group = 'com.exmertec.dummie'
+group = 'io.github.dummie-java'
 archivesBaseName = "dummie"
-version = '0.2.1'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -49,12 +49,12 @@ uploadArchives {
                 packaging 'jar'
                 // optionally artifactId can be defined here
                 description 'When writing functional testing in Java enterprise application, it\'s always a pain to initialize entity objects, this library generates entity objects automatically, and you can change just the fields you want to control for testing.'
-                url 'https://github.com/elvis-liu/dummie'
+                url 'https://github.com/dummie-java/dummie'
 
                 scm {
-                    connection 'scm:git:https://github.com/elvis-liu/dummie.git'
-                    developerConnection 'scm:git:https://github.com/elvis-liu/dummie.git'
-                    url 'https://github.com/elvis-liu/dummie.git'
+                    connection 'scm:git:https://github.com/dummie-java/dummie.git'
+                    developerConnection 'scm:git:https://github.com/dummie-java/dummie.git'
+                    url 'https://github.com/dummie-java/dummie.git'
                 }
 
                 licenses {
