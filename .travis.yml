@@ -1,11 +1,11 @@
- dist: trusty
- language: java
- sudo: false
- jdk:
- - oraclejdk8
- - openjdk8
- os:
- - linux
- install: true
- script:
- - ./gradlew clean check
+dist: trusty
+language: java
+sudo: false
+jdk:
+  - oraclejdk8
+  - openjdk8
+os:
+  - linux
+install: true
+script:
+  - ./gradlew clean check
