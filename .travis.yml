@@ -1,9 +1,11 @@
-language: java
-sudo: false
-jdk:
+ dist: trusty
+ language: java
+ sudo: false
+ jdk:
  - oraclejdk8
-os:
+ - openjdk8
+ os:
  - linux
-install: true
-script:
- - ./gradlew test
+ install: true
+ script:
+ - ./gradlew clean check
