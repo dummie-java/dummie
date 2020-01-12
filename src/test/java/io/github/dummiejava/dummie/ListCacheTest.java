@@ -55,7 +55,7 @@ public class ListCacheTest {
 
     public static class NestingData2 {
         private String desc;
-        private NestingData1 data;
+        private NestingData3 data;
 
         public String getDesc() {
             return desc;
@@ -65,11 +65,32 @@ public class ListCacheTest {
             this.desc = desc;
         }
 
-        public NestingData1 getData() {
+        public NestingData3 getData() {
             return data;
         }
 
-        public void setData(NestingData1 data) {
+        public void setData(NestingData3 data) {
+            this.data = data;
+        }
+    }
+
+    public static class NestingData3 {
+        private String desc;
+        private List<NestingData1> data;
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public List<NestingData1> getData() {
+            return data;
+        }
+
+        public void setData(List<NestingData1> data) {
             this.data = data;
         }
     }

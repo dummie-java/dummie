@@ -1,4 +1,4 @@
-# Welcome to Dummie [![Build Status](https://travis-ci.org/dummie-java/dummie.svg?branch=master)](https://travis-ci.org/dummie-java/dummie) 
+# Welcome to Dummie [![Build Status](https://travis-ci.org/dummie-java/dummie.svg?branch=master)](https://travis-ci.org/dummie-java/dummie) [![Maven Central](https://img.shields.io/maven-central/v/io.github.dummie-java/dummie.svg)](https://search.maven.org/search?q=g:io.github.dummie-java%20AND%20a:dummie)
 
 ### Overview
 
@@ -9,6 +9,11 @@ TargetClass instance = Dummie.create(TargetClass.class);
 ```
 
 ### Usage
+
+* Add Dependency
+```groovy
+compile "io.github.dummie-java:dummie:1.0.0"
+```
 
 ##### Basic usage
 
