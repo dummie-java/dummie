@@ -29,8 +29,8 @@ public class DateTimeFieldValueGenerator extends FieldValueGenerator {
   @Override
   protected Object randomGenerator(DataGenerator dataGenerator, Class<?> fieldType, String fieldName) {
     Random random = new Random();
-    LocalDateTime localDateTime = LocalDateTime.of(random.nextInt(9999), random.nextInt(12),
-        random.nextInt(30), random.nextInt(24), random.nextInt(60));
+    LocalDateTime localDateTime = LocalDateTime.of(random.nextInt(9998) + 1, random.nextInt(11) + 1,
+        random.nextInt(27) + 1, random.nextInt(23) + 1, random.nextInt(60));
     if (fieldType.isAssignableFrom(LocalDateTime.class)) {
       return localDateTime;
     } else if (fieldType.isAssignableFrom(ZonedDateTime.class)) {
