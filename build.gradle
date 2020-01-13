@@ -5,7 +5,7 @@ apply plugin: 'java'
 
 group = 'io.github.dummie-java'
 archivesBaseName = "dummie"
-version = '1.0.0'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
