@@ -8,7 +8,7 @@ public class KeyValueDataCache extends BasicDataCache {
   private final Map<Class<?>, Map<String, Object>> keyValueCachedData;
 
   public KeyValueDataCache() {
-    keyValueCachedData = new HashMap<Class<?>, Map<String, Object>>();
+    keyValueCachedData = new HashMap<>();
   }
 
   @Override
@@ -37,8 +37,12 @@ public class KeyValueDataCache extends BasicDataCache {
     Class<?> cacheDataType = normalize(dataType);
     Map datas = keyValueCachedData.get(cacheDataType);
     if (datas != null) {
-      return (T) datas.get(key);
+      return (T) getCachedValue(key, datas);
     }
     return null;
+  }
+
+  private Object getCachedValue(String key, Map data) {
+    return data.get(key);
   }
 }

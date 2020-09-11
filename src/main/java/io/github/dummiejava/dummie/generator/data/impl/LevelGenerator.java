@@ -28,6 +28,7 @@ public class LevelGenerator extends DataGenerator {
     currentFloor -= 1;
   }
 
+  @Override
   public Object getData(Field field) {
     Object value = isOverFloor() ? null : super.getData(field);
     downstream();
@@ -38,12 +39,7 @@ public class LevelGenerator extends DataGenerator {
   protected FieldValueGenerator getDefaultFieldValueGenerator(Class<?> dataType) {
     return new FieldValueGenerator() {
       @Override
-      public Object generate(DataGenerator dataGenerator, Field field) {
-        return generate(dataGenerator, field.getType(), field.getName());
-      }
-
-      @Override
-      public Object generate(DataGenerator dataGenerator, Class fieldType, String fieldName) {
+      public Object generate(DataGenerator dataGenerator, Class fieldType, String fieldName, GenerationStrategy strategy) {
         try {
           Object instance = fieldType.newInstance();
           Inflater.inflateInstance(instance, dataGenerator, fieldType);

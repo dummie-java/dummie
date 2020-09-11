@@ -74,9 +74,9 @@ public abstract class DataGenerator {
     Class<?> fieldType = field.getType();
     Object value = dataCache.getCachedData(fieldType, field.getName());
     if (value == null) {
-      FieldValueGenerator generator = getGenerator(fieldType, field.getName());
+      FieldValueGenerator generator = getCachedGenerator(fieldType);
       if (generator != null) {
-        value = generator.generate(this, field);
+        value = generator.generate(this, field, getStrategy(fieldType, field.getName()));
       }
     }
     return value;
@@ -85,9 +85,9 @@ public abstract class DataGenerator {
   public Object getData(Class<?> dataType, String key) {
     Object value = dataCache.getCachedData(dataType, key);
     if (value == null) {
-      FieldValueGenerator generator = getGenerator(dataType, key);
+      FieldValueGenerator generator = getCachedGenerator(dataType);
       if (generator != null) {
-        value = generator.generate(this, dataType, key);
+        value = generator.generate(this, dataType, key, getStrategy(dataType, key));
       }
     }
     return value;
@@ -118,16 +118,6 @@ public abstract class DataGenerator {
   protected GenerationStrategy getStrategy(Class<?> dataType, String key) {
     return randomFieldType.contains(dataType) || randomFieldKeys.contains(key) ?
         GenerationStrategy.RANDOM : strategy;
-  }
-
-  protected FieldValueGenerator switchGeneratorStrategy(FieldValueGenerator generator,
-      Class<?> dataType, String key) {
-    generator.setStrategy(getStrategy(dataType, key));
-    return generator;
-  }
-
-  private FieldValueGenerator getGenerator(Class<?> dataType, String key) {
-    return switchGeneratorStrategy(getCachedGenerator(dataType), dataType, key);
   }
 
   private FieldValueGenerator getCachedGenerator(Class<?> dataType) {

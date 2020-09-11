@@ -1,5 +1,6 @@
 package io.github.dummiejava.dummie.generator.field.impl;
 
+import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import java.lang.reflect.Field;
@@ -33,7 +34,7 @@ public class MapFieldValueGenerator extends FieldValueGenerator {
   }
 
   @Override
-  public Map generate(DataGenerator dataGenerator, Field field) {
+  public Map generate(DataGenerator dataGenerator, Field field, GenerationStrategy strategy) {
     Map value = generateValue(field.getType());
 
     Type genericType = field.getGenericType();
@@ -42,8 +43,8 @@ public class MapFieldValueGenerator extends FieldValueGenerator {
       Class<?> keyClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
       Class<?> valueClass = (Class<?>) parameterizedType.getActualTypeArguments()[1];
 
-      value.put(dataGenerator.getData(keyClass, generateKeyValue()),
-          dataGenerator.getData(valueClass, generateKeyValue()));
+      value.put(dataGenerator.getData(keyClass, generateKeyValue(strategy)),
+          dataGenerator.getData(valueClass, generateKeyValue(strategy)));
     }
 
     return value;
@@ -55,7 +56,7 @@ public class MapFieldValueGenerator extends FieldValueGenerator {
   }
 
   @Override
-  public Map generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName) {
+  public Map generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName, GenerationStrategy strategy) {
     return generateValue(fieldType);
   }
 }

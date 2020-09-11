@@ -4,20 +4,11 @@ import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import io.github.dummiejava.dummie.generator.field.impl.CustomTypeFieldValueGenerator;
-import java.lang.reflect.Field;
 
 public class DefaultGenerator extends DataGenerator {
 
   public DefaultGenerator(GenerationStrategy generationStrategy) {
     super(generationStrategy);
-  }
-
-  @Override
-  public Object getData(Field field) {
-    Object value = super.getData(field);
-    dynamicCacheData(field.getType(), field.getName(), value);
-
-    return value;
   }
 
   @Override

@@ -9,7 +9,7 @@ public class Dummie {
     return prepare(type).build();
   }
 
-  public static <T> DummyBuilder<T> prepare(Class<T> type) {
+  public static <T> DummyInstanceBuilder<T> prepare(Class<T> type) {
     return new DummyBuilderFactory().prepare(type);
   }
 

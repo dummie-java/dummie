@@ -12,7 +12,7 @@ public class BasicDataCache implements DataCache {
 
   public BasicDataCache() {
     appendPrimitiveWrappers();
-    cachedData = new HashMap<Class<?>, Object>();
+    cachedData = new HashMap<>();
   }
 
   private void appendPrimitiveWrappers() {

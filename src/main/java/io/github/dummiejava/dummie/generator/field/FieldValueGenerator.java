@@ -9,22 +9,16 @@ import java.util.UUID;
 public abstract class FieldValueGenerator {
 
   private final Class<?>[] fieldTypes;
-  protected GenerationStrategy strategy;
 
   protected FieldValueGenerator(Class<?>... fieldTypes) {
-    this(GenerationStrategy.DEFAULT, fieldTypes);
-  }
-
-  protected FieldValueGenerator(GenerationStrategy strategy, Class<?>... fieldTypes) {
-    this.strategy = strategy;
     this.fieldTypes = fieldTypes;
   }
 
-  public Object generate(DataGenerator dataGenerator, Field field) {
-    return generate(dataGenerator, field.getType(), field.getName());
+  public Object generate(DataGenerator dataGenerator, Field field, GenerationStrategy strategy) {
+    return generate(dataGenerator, field.getType(), field.getName(), strategy);
   }
 
-  public Object generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName) {
+  public Object generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName, GenerationStrategy strategy) {
     switch (strategy) {
       case RANDOM:
         return randomGenerator(dataGenerator, fieldType, fieldName);
@@ -34,7 +28,7 @@ public abstract class FieldValueGenerator {
     }
   }
 
-  protected String generateKeyValue() {
+  protected String generateKeyValue(GenerationStrategy strategy) {
     return strategy == GenerationStrategy.RANDOM ? UUID.randomUUID().toString() : Constant.DEFAULT_STRING_VALUE;
   }
 
@@ -53,9 +47,5 @@ public abstract class FieldValueGenerator {
       }
     }
     return false;
-  }
-
-  public void setStrategy(GenerationStrategy strategy) {
-    this.strategy = strategy;
   }
 }

@@ -31,8 +31,8 @@ public class DummyBuilderFactory {
     return this;
   }
 
-  public <T> DummyBuilder<T> prepare(Class<T> type) {
-    return new DummyBuilder(type, getDataGenerator());
+  public <T> DummyInstanceBuilder<T> prepare(Class<T> type) {
+    return new DummyInstanceBuilder(type, getDataGenerator());
   }
 
   public <T> T create(Class<T> type) {

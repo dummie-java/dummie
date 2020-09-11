@@ -1,5 +1,6 @@
 package io.github.dummiejava.dummie.generator.field.impl;
 
+import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import java.lang.reflect.Field;
@@ -32,14 +33,14 @@ public class ListFieldValueGenerator extends FieldValueGenerator {
   }
 
   @Override
-  public List generate(DataGenerator dataGenerator, Field field) {
+  public List generate(DataGenerator dataGenerator, Field field, GenerationStrategy strategy) {
     List value = generateValue(field.getType());
     Type genericType = field.getGenericType();
     if (genericType instanceof ParameterizedType) {
       ParameterizedType parameterizedType = (ParameterizedType) genericType;
       Class<?> listClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-      value.add(dataGenerator.getData(listClass, generateKeyValue()));
+      value.add(dataGenerator.getData(listClass, generateKeyValue(strategy)));
     }
 
     return value;
@@ -51,7 +52,7 @@ public class ListFieldValueGenerator extends FieldValueGenerator {
   }
 
   @Override
-  public List generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName) {
+  public List generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName, GenerationStrategy strategy) {
     return generateValue(fieldType);
   }
 }

@@ -1,5 +1,6 @@
 package io.github.dummiejava.dummie.generator.field.impl;
 
+import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import java.lang.reflect.Field;
@@ -32,7 +33,7 @@ public class SetFieldValueGenerator extends FieldValueGenerator {
   }
 
   @Override
-  public Set generate(DataGenerator dataGenerator, Field field) {
+  public Set generate(DataGenerator dataGenerator, Field field, GenerationStrategy strategy) {
     Set value = generateValue(field.getType());
 
     Type genericType = field.getGenericType();
@@ -40,14 +41,14 @@ public class SetFieldValueGenerator extends FieldValueGenerator {
       ParameterizedType parameterizedType = (ParameterizedType) genericType;
       Class<?> setClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-      value.add(dataGenerator.getData(setClass, generateKeyValue()));
+      value.add(dataGenerator.getData(setClass, generateKeyValue(strategy)));
     }
 
     return value;
   }
 
   @Override
-  public Set generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName) {
+  public Set generate(DataGenerator dataGenerator, Class<?> fieldType, String fieldName, GenerationStrategy strategy) {
     return generateValue(fieldType);
   }
 
