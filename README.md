@@ -93,6 +93,11 @@ Employee dummieEmployee = Dummie.withStrategy(GenerationStrategy.RANDOM)
 	.build();
 ```
 
+##### You can also override DataCache and DataGenerator by yourself
+```
+Configuration configuration = new Configuration(cycleLogic, strategy, dataCache, dataGenerator);
+Employee dummieEmployee = Dummie.withConfiguration(configuration).create(Employee.class);
+```
 
 ### Advance usage
 If the target class fields have cycle used, **Dummie** has two logic to deal with.
@@ -103,7 +108,7 @@ And **Dummie** also support generate by cycle deep, if you want use you can set
 
 ```
 Employee dummieEmployee = Dummie.cycleLogic(CycleLogic.LEVEL)
-	.withFloor(floor) // Optional, set cycle deep level, default value is 2.
+	.withFloor(limit) // Optional, set cycle deep level, default value is 2.
 	.prepare(Employee.class)
 	.build();
 ```

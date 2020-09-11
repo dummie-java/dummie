@@ -1,22 +1,35 @@
 package io.github.dummiejava.dummie.configuration;
 
+import io.github.dummiejava.dummie.cache.DataCache;
+import io.github.dummiejava.dummie.generator.data.DataGenerator;
+
 public class Configuration {
 
-  private Integer floor;
+  private Integer limit;
   private CycleLogic cycleLogic;
+  private DataCache dataCache;
   private GenerationStrategy generationStrategy;
+  private DataGenerator DataGenerator;
 
-  public Configuration(CycleLogic cycleLogic, GenerationStrategy strategy) {
+  public Configuration(CycleLogic cycleLogic, GenerationStrategy strategy, DataCache dataCache) {
     setCycleLogic(cycleLogic);
     setGenerationStrategy(strategy);
+    setDataCache(dataCache);
   }
 
-  public Integer getFloor() {
-    return floor;
+  public Configuration(CycleLogic cycleLogic, GenerationStrategy strategy, DataCache dataCache, DataGenerator dataGenerator) {
+    setCycleLogic(cycleLogic);
+    setGenerationStrategy(strategy);
+    setDataCache(dataCache);
+    setDataGenerator(dataGenerator);
   }
 
-  public void setFloor(Integer floor) {
-    this.floor = floor;
+  public Integer getLimit() {
+    return limit;
+  }
+
+  public void setLimit(Integer limit) {
+    this.limit = limit;
   }
 
   public CycleLogic getCycleLogic() {
@@ -25,9 +38,17 @@ public class Configuration {
 
   public void setCycleLogic(CycleLogic cycleLogic) {
     this.cycleLogic = cycleLogic;
-    if (cycleLogic == CycleLogic.LEVEL) { // set default floor value
-      floor = 2;
+    if (cycleLogic == CycleLogic.LEVEL) { // set default limit value
+      limit = 2;
     }
+  }
+
+  public DataCache getDataCache() {
+    return dataCache;
+  }
+
+  public void setDataCache(DataCache dataCache) {
+    this.dataCache = dataCache;
   }
 
   public GenerationStrategy getGenerationStrategy() {
@@ -36,5 +57,13 @@ public class Configuration {
 
   public void setGenerationStrategy(GenerationStrategy generationStrategy) {
     this.generationStrategy = generationStrategy;
+  }
+
+  public io.github.dummiejava.dummie.generator.data.DataGenerator getDataGenerator() {
+    return DataGenerator;
+  }
+
+  public void setDataGenerator(io.github.dummiejava.dummie.generator.data.DataGenerator dataGenerator) {
+    DataGenerator = dataGenerator;
   }
 }

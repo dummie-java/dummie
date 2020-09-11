@@ -1,6 +1,7 @@
 package io.github.dummiejava.dummie.generator.data.impl;
 
 import io.github.dummiejava.dummie.DummieException;
+import io.github.dummiejava.dummie.cache.DataCache;
 import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.Inflater;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
@@ -9,23 +10,23 @@ import java.lang.reflect.Field;
 
 public class LevelGenerator extends DataGenerator {
 
-  private Integer floor;
-  private Integer currentFloor;
+  private final Integer limit;
+  private Integer current;
 
-  public LevelGenerator(GenerationStrategy strategy, Integer floor) {
-    super(strategy);
+  public LevelGenerator(GenerationStrategy strategy, DataCache dataCache, Integer limit) {
+    super(strategy, dataCache);
 
-    this.floor = floor;
-    this.currentFloor = 0;
+    this.limit = limit;
+    this.current = 0;
   }
 
   private boolean isOverFloor() {
-    currentFloor += 1;
-    return currentFloor > floor;
+    current += 1;
+    return current > limit;
   }
 
   private void downstream() {
-    currentFloor -= 1;
+    current -= 1;
   }
 
   @Override

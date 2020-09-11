@@ -1,5 +1,6 @@
 package io.github.dummiejava.dummie;
 
+import io.github.dummiejava.dummie.configuration.Configuration;
 import io.github.dummiejava.dummie.configuration.CycleLogic;
 import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 
@@ -16,6 +17,11 @@ public class Dummie {
   public static DummyBuilderFactory cycleLogic(CycleLogic logic) {
     DummyBuilderFactory factory = new DummyBuilderFactory();
     factory.cycleLogic(logic);
+    return factory;
+  }
+
+  public static DummyBuilderFactory withConfiguration(Configuration configuration) {
+    DummyBuilderFactory factory = new DummyBuilderFactory(configuration);
     return factory;
   }
 

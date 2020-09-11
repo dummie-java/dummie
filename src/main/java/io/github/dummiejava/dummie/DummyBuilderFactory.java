@@ -1,6 +1,8 @@
 package io.github.dummiejava.dummie;
 
 
+import io.github.dummiejava.dummie.cache.DataCache;
+import io.github.dummiejava.dummie.cache.impl.KeyValueDataCache;
 import io.github.dummiejava.dummie.configuration.Configuration;
 import io.github.dummiejava.dummie.configuration.CycleLogic;
 import io.github.dummiejava.dummie.configuration.GenerationStrategy;
@@ -10,10 +12,14 @@ import io.github.dummiejava.dummie.generator.data.impl.LevelGenerator;
 
 public class DummyBuilderFactory {
 
-  private Configuration configuration;
+  private final Configuration configuration;
 
   public DummyBuilderFactory() {
-    configuration = new Configuration(CycleLogic.CYCLE, GenerationStrategy.DEFAULT);
+    configuration = new Configuration(CycleLogic.CYCLE, GenerationStrategy.DEFAULT, new KeyValueDataCache());
+  }
+
+  public DummyBuilderFactory(Configuration configuration) {
+    this.configuration = configuration;
   }
 
   public DummyBuilderFactory cycleLogic(CycleLogic logic) {
@@ -22,12 +28,17 @@ public class DummyBuilderFactory {
   }
 
   public DummyBuilderFactory withFloor(int floor) {
-    configuration.setFloor(floor);
+    configuration.setLimit(floor);
     return this;
   }
 
   public DummyBuilderFactory withStrategy(GenerationStrategy strategy) {
     configuration.setGenerationStrategy(strategy);
+    return this;
+  }
+
+  public DummyBuilderFactory withDataCache(DataCache dataCache) {
+    configuration.setDataCache(dataCache);
     return this;
   }
 
@@ -40,11 +51,14 @@ public class DummyBuilderFactory {
   }
 
   private DataGenerator getDataGenerator() {
+    if (configuration.getDataGenerator() != null) {
+      return configuration.getDataGenerator();
+    }
     switch (configuration.getCycleLogic()) {
       case CYCLE:
-        return new DefaultGenerator(configuration.getGenerationStrategy());
+        return new DefaultGenerator(configuration.getGenerationStrategy(), configuration.getDataCache());
       case LEVEL:
-        return new LevelGenerator(configuration.getGenerationStrategy(), configuration.getFloor());
+        return new LevelGenerator(configuration.getGenerationStrategy(), configuration.getDataCache(), configuration.getLimit());
       default:
         throw new IllegalArgumentException();
     }

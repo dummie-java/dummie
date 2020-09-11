@@ -1,7 +1,6 @@
 package io.github.dummiejava.dummie.generator.data;
 
 import io.github.dummiejava.dummie.cache.DataCache;
-import io.github.dummiejava.dummie.cache.impl.KeyValueDataCache;
 import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import io.github.dummiejava.dummie.generator.field.impl.BigDecimalFieldValueGenerator;
@@ -33,13 +32,9 @@ public abstract class DataGenerator {
 
   private final Set<Class<?>> randomFieldType;
 
-  protected DataCache dataCache;
+  private final DataCache dataCache;
 
-  protected GenerationStrategy strategy;
-
-  public DataGenerator(GenerationStrategy strategy) {
-    this(strategy, new KeyValueDataCache());
-  }
+  private final GenerationStrategy strategy;
 
   public DataGenerator(GenerationStrategy strategy, DataCache dataCache) {
     this.dataCache = dataCache;
