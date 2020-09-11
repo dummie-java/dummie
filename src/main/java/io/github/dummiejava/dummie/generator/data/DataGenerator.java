@@ -27,118 +27,118 @@ import java.util.Set;
 
 public abstract class DataGenerator {
 
-    private final List<FieldValueGenerator> generators;
+  private final List<FieldValueGenerator> generators;
 
-    private final Set<String> randomFieldKeys;
+  private final Set<String> randomFieldKeys;
 
-    private final Set<Class<?>> randomFieldType;
+  private final Set<Class<?>> randomFieldType;
 
-    protected DataCache dataCache;
+  protected DataCache dataCache;
 
-    protected GenerationStrategy strategy;
+  protected GenerationStrategy strategy;
 
-    public DataGenerator(GenerationStrategy strategy) {
-        this(strategy, new KeyValueDataCache());
+  public DataGenerator(GenerationStrategy strategy) {
+    this(strategy, new KeyValueDataCache());
+  }
+
+  public DataGenerator(GenerationStrategy strategy, DataCache dataCache) {
+    this.dataCache = dataCache;
+    this.strategy = strategy;
+
+    generators = new ArrayList<>();
+    randomFieldKeys = new HashSet<>();
+    randomFieldType = new HashSet<>();
+
+    addDefaultGenerators();
+  }
+
+  private void addDefaultGenerators() {
+    generators.add(new StringFieldValueGenerator());
+    generators.add(new ListFieldValueGenerator());
+    generators.add(new MapFieldValueGenerator());
+    generators.add(new SetFieldValueGenerator());
+    generators.add(new BooleanFieldValueGenerator());
+    generators.add(new ByteFieldValueGenerator());
+    generators.add(new CharacterFieldValueGenerator());
+    generators.add(new DoubleFieldValueGenerator());
+    generators.add(new FloatFieldValueGenerator());
+    generators.add(new IntegerFieldValueGenerator());
+    generators.add(new LongFieldValueGenerator());
+    generators.add(new ShortFieldValueGenerator());
+    generators.add(new EnumFieldValueGenerator());
+    generators.add(new BigDecimalFieldValueGenerator());
+    generators.add(new DateTimeFieldValueGenerator());
+  }
+
+  public Object getData(Field field) {
+    Class<?> fieldType = field.getType();
+    Object value = dataCache.getCachedData(fieldType, field.getName());
+    if (value == null) {
+      FieldValueGenerator generator = getGenerator(fieldType, field.getName());
+      if (generator != null) {
+        value = generator.generate(this, field);
+      }
     }
+    return value;
+  }
 
-    public DataGenerator(GenerationStrategy strategy, DataCache dataCache) {
-        this.dataCache = dataCache;
-        this.strategy = strategy;
-
-        generators = new ArrayList<>();
-        randomFieldKeys = new HashSet<>();
-        randomFieldType = new HashSet<>();
-
-        addDefaultGenerators();
+  public Object getData(Class<?> dataType, String key) {
+    Object value = dataCache.getCachedData(dataType, key);
+    if (value == null) {
+      FieldValueGenerator generator = getGenerator(dataType, key);
+      if (generator != null) {
+        value = generator.generate(this, dataType, key);
+      }
     }
+    return value;
+  }
 
-    private void addDefaultGenerators() {
-        generators.add(new StringFieldValueGenerator());
-        generators.add(new ListFieldValueGenerator());
-        generators.add(new MapFieldValueGenerator());
-        generators.add(new SetFieldValueGenerator());
-        generators.add(new BooleanFieldValueGenerator());
-        generators.add(new ByteFieldValueGenerator());
-        generators.add(new CharacterFieldValueGenerator());
-        generators.add(new DoubleFieldValueGenerator());
-        generators.add(new FloatFieldValueGenerator());
-        generators.add(new IntegerFieldValueGenerator());
-        generators.add(new LongFieldValueGenerator());
-        generators.add(new ShortFieldValueGenerator());
-        generators.add(new EnumFieldValueGenerator());
-        generators.add(new BigDecimalFieldValueGenerator());
-        generators.add(new DateTimeFieldValueGenerator());
+  public <T> void cacheData(Class<T> dataType, String key, Object value) {
+    dataCache.cacheData(dataType, key, value);
+  }
+
+  public <T> void cacheData(Class<T> clazz, Object value) {
+    dataCache.cacheData(clazz, value);
+  }
+
+  public <T> void dynamicCacheData(Class<T> dataType, String key, Object value) {
+    if (getStrategy(dataType, key) == GenerationStrategy.DEFAULT) {
+      dataCache.cacheData(dataType, key, value);
     }
+  }
 
-    public Object getData(Field field) {
-        Class<?> fieldType = field.getType();
-        Object value = dataCache.getCachedData(fieldType, field.getName());
-        if (value == null) {
-            FieldValueGenerator generator = getGenerator(fieldType, field.getName());
-            if (generator != null) {
-                value = generator.generate(this, field);
-            }
-        }
-        return value;
-    }
+  public void random(Class<?> clazz) {
+    randomFieldType.add(clazz);
+  }
 
-    public Object getData(Class<?> dataType, String key) {
-        Object value = dataCache.getCachedData(dataType, key);
-        if (value == null) {
-            FieldValueGenerator generator = getGenerator(dataType, key);
-            if (generator != null) {
-                value = generator.generate(this, dataType, key);
-            }
-        }
-        return value;
-    }
+  public void random(String key) {
+    randomFieldKeys.add(key);
+  }
 
-    public <T> void cacheData(Class<T> dataType, String key, Object value) {
-        dataCache.cacheData(dataType, key, value);
-    }
+  protected GenerationStrategy getStrategy(Class<?> dataType, String key) {
+    return randomFieldType.contains(dataType) || randomFieldKeys.contains(key) ?
+        GenerationStrategy.RANDOM : strategy;
+  }
 
-    public <T> void cacheData(Class<T> clazz, Object value) {
-        dataCache.cacheData(clazz, value);
-    }
+  protected FieldValueGenerator switchGeneratorStrategy(FieldValueGenerator generator,
+      Class<?> dataType, String key) {
+    generator.setStrategy(getStrategy(dataType, key));
+    return generator;
+  }
 
-    public  <T> void dynamicCacheData(Class<T> dataType, String key, Object value) {
-        if (getStrategy(dataType, key) == GenerationStrategy.DEFAULT) {
-            dataCache.cacheData(dataType, key, value);
-        }
-    }
+  private FieldValueGenerator getGenerator(Class<?> dataType, String key) {
+    return switchGeneratorStrategy(getCachedGenerator(dataType), dataType, key);
+  }
 
-    public void random(Class<?> clazz) {
-        randomFieldType.add(clazz);
-    }
-
-    public void random(String key) {
-        randomFieldKeys.add(key);
-    }
-
-    protected GenerationStrategy getStrategy(Class<?> dataType, String key) {
-        return randomFieldType.contains(dataType) || randomFieldKeys.contains(key) ?
-            GenerationStrategy.RANDOM : strategy;
-    }
-
-    protected FieldValueGenerator switchGeneratorStrategy(FieldValueGenerator generator,
-                                                          Class<?> dataType, String key) {
-        generator.setStrategy(getStrategy(dataType, key));
+  private FieldValueGenerator getCachedGenerator(Class<?> dataType) {
+    for (FieldValueGenerator generator : generators) {
+      if (generator.isMatchType(dataType)) {
         return generator;
+      }
     }
 
-    private FieldValueGenerator getGenerator(Class<?> dataType, String key) {
-        return switchGeneratorStrategy(getCachedGenerator(dataType), dataType, key);
-    }
+    return getDefaultFieldValueGenerator(dataType);
+  }
 
-    private FieldValueGenerator getCachedGenerator(Class<?> dataType) {
-        for (FieldValueGenerator generator: generators) {
-            if (generator.isMatchType(dataType)) {
-                return generator;
-            }
-        }
-
-        return getDefaultFieldValueGenerator(dataType);
-    }
-
-    protected abstract FieldValueGenerator getDefaultFieldValueGenerator(Class<?> dataType);
+  protected abstract FieldValueGenerator getDefaultFieldValueGenerator(Class<?> dataType);
 }
