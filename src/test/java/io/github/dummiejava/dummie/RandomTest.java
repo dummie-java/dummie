@@ -14,7 +14,7 @@ public class RandomTest {
 
     @Test
     public void should_prepare_class_and_custom_random() throws Exception {
-        NestingData1 nestingData1 = Dummie.prepare(NestingData1.class).random(String.class).build();
+        NestingData1 nestingData1 = Dummie.prepare().random(String.class).create(NestingData1.class);
 
         assertThat(nestingData1, not(nullValue()));
         assertThat(nestingData1.getName(), not(nullValue()));
@@ -25,9 +25,9 @@ public class RandomTest {
 
     @Test
     public void should_prepare_class_and_set_random_strategy_by_filed_name() throws Exception {
-        NestingData1 nestingData1 = Dummie.prepare(NestingData1.class)
+        NestingData1 nestingData1 = Dummie.prepare()
             .random("name")
-            .build();
+            .create(NestingData1.class);
 
         assertThat(nestingData1, not(nullValue()));
         assertThat(nestingData1.getName(), not(nullValue()));
@@ -38,10 +38,10 @@ public class RandomTest {
 
     @Test
     public void should_prepare_class_and_not_set_random_with_wrong_field_name() throws Exception {
-        NestingData1 nestingData1 = Dummie.prepare(NestingData1.class)
+        NestingData1 nestingData1 = Dummie.prepare()
             .override(String.class, "abc")
             .random("name1")
-            .build();
+            .create(NestingData1.class);
 
         assertThat(nestingData1, not(nullValue()));
         assertThat(nestingData1.getName(), equalTo("abc"));
@@ -51,10 +51,10 @@ public class RandomTest {
 
     @Test
     public void should_return_different_value_when_set_random() throws Exception {
-        NestingData3 nestingData3 = Dummie.prepare(NestingData3.class)
+        NestingData3 nestingData3 = Dummie.prepare()
             .random(String.class)
             .random(ZonedDateTime.class)
-            .build();
+            .create(NestingData3.class);
 
         assertThat(nestingData3, not(nullValue()));
         assertThat(nestingData3.getName(), not(nullValue()));

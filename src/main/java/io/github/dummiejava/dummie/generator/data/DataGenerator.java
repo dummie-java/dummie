@@ -20,29 +20,24 @@ import io.github.dummiejava.dummie.generator.field.impl.ShortFieldValueGenerator
 import io.github.dummiejava.dummie.generator.field.impl.StringFieldValueGenerator;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public abstract class DataGenerator {
 
   private final List<FieldValueGenerator> generators;
-
-  private final Set<String> randomFieldKeys;
-
-  private final Set<Class<?>> randomFieldType;
-
   private final DataCache dataCache;
-
   private final GenerationStrategy strategy;
+  private final Set<String> randomFieldKeys;
+  private final Set<Class<?>> randomFieldTypes;
 
-  public DataGenerator(GenerationStrategy strategy, DataCache dataCache) {
+  public DataGenerator(GenerationStrategy strategy, DataCache dataCache, Set<String> randomFieldKeys, Set<Class<?>> randomFieldTypes) {
     this.dataCache = dataCache;
     this.strategy = strategy;
 
-    generators = new ArrayList<>();
-    randomFieldKeys = new HashSet<>();
-    randomFieldType = new HashSet<>();
+    this.generators = new ArrayList<>();
+    this.randomFieldKeys = randomFieldKeys;
+    this.randomFieldTypes = randomFieldTypes;
 
     addDefaultGenerators();
   }
@@ -88,30 +83,14 @@ public abstract class DataGenerator {
     return value;
   }
 
-  public <T> void cacheData(Class<T> dataType, String key, Object value) {
-    dataCache.cacheData(dataType, key, value);
-  }
-
-  public <T> void cacheData(Class<T> clazz, Object value) {
-    dataCache.cacheData(clazz, value);
-  }
-
   public <T> void dynamicCacheData(Class<T> dataType, String key, Object value) {
     if (getStrategy(dataType, key) == GenerationStrategy.DEFAULT) {
       dataCache.cacheData(dataType, key, value);
     }
   }
 
-  public void random(Class<?> clazz) {
-    randomFieldType.add(clazz);
-  }
-
-  public void random(String key) {
-    randomFieldKeys.add(key);
-  }
-
   protected GenerationStrategy getStrategy(Class<?> dataType, String key) {
-    return randomFieldType.contains(dataType) || randomFieldKeys.contains(key) ?
+    return randomFieldTypes.contains(dataType) || randomFieldKeys.contains(key) ?
         GenerationStrategy.RANDOM : strategy;
   }
 

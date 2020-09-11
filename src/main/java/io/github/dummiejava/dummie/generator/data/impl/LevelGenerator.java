@@ -7,14 +7,16 @@ import io.github.dummiejava.dummie.generator.Inflater;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import java.lang.reflect.Field;
+import java.util.Set;
 
 public class LevelGenerator extends DataGenerator {
 
   private final Integer limit;
   private Integer current;
 
-  public LevelGenerator(GenerationStrategy strategy, DataCache dataCache, Integer limit) {
-    super(strategy, dataCache);
+  public LevelGenerator(GenerationStrategy strategy, DataCache dataCache,
+      Set<String> randomFieldKeys, Set<Class<?>> randomFieldTypes, Integer limit) {
+    super(strategy, dataCache, randomFieldKeys, randomFieldTypes);
 
     this.limit = limit;
     this.current = 0;

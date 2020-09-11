@@ -48,10 +48,10 @@ public class EnumTest {
 
     @Test
     public void should_cache_same_type_field_with_diff_field() {
-        CacheEnumData cacheEnumData = Dummie.prepare(CacheEnumData.class)
+        CacheEnumData cacheEnumData = Dummie.prepare()
                 .override("dataType", DataType.INTEGER)
                 .override("dataType1", DataType.FLOAT)
-                .build();
+                .create(CacheEnumData.class);
 
         assertThat(cacheEnumData, not(nullValue()));
         assertEquals(DataType.INTEGER, cacheEnumData.getDataType());

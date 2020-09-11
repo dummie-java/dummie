@@ -12,203 +12,205 @@ import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import org.junit.Test;
 
 public class PrimitivesTest {
-    @Test
-    public void should_create_object_with_primitive_fields() throws Exception {
-        PrimitiveData data = create(PrimitiveData.class);
 
-        assertThat(data, not(nullValue()));
-        assertThat(data.isBooleanValue(), is(false));
+  @Test
+  public void should_create_object_with_primitive_fields() throws Exception {
+    PrimitiveData data = create(PrimitiveData.class);
+
+    assertThat(data, not(nullValue()));
+    assertThat(data.isBooleanValue(), is(false));
+  }
+
+  @Test
+  public void should_create_object_with_random_strategy() throws Exception {
+    PrimitiveData data = withStrategy(GenerationStrategy.RANDOM)
+        .create(PrimitiveData.class);
+
+    assertThat(data, not(nullValue()));
+    assertThat(data.isBooleanValue(), not(nullValue()));
+  }
+
+  @Test
+  public void should_allow_customize_primitive_type_fields() throws Exception {
+    PrimitiveData data = prepare().override("booleanValue", true).create(PrimitiveData.class);
+
+    assertThat(data, not(nullValue()));
+    assertThat(data.isBooleanValue(), is(true));
+  }
+
+  @Test
+  public void should_customize_override_fields_with_random_strategy() throws Exception {
+    PrimitiveData data = withStrategy(GenerationStrategy.RANDOM)
+        .override("booleanValue", true)
+        .create(PrimitiveData.class);
+
+    assertThat(data, not(nullValue()));
+    assertThat(data.isBooleanValue(), is(true));
+  }
+
+  @Test
+  public void should_create_object_with_primitive_wrapper_fields() throws Exception {
+    PrimitiveWrapperData data = create(PrimitiveWrapperData.class);
+
+    assertThat(data.getBooleanValue(), is(false));
+  }
+
+  @Test
+  public void should_allow_customize_primitive_wrapper_type_fields() throws Exception {
+    PrimitiveWrapperData data = prepare().override("booleanValue", true).create(PrimitiveWrapperData.class);
+
+    assertThat(data.getBooleanValue(), is(true));
+  }
+
+  public static class PrimitiveData {
+
+    private byte byteValue;
+    private short shortValue;
+    private int intValue;
+    private long longValue;
+    private float floatValue;
+    private double doubleValue;
+    private boolean booleanValue;
+    private char charValue;
+
+    public byte getByteValue() {
+      return byteValue;
     }
 
-    @Test
-    public void should_create_object_with_random_strategy() throws Exception {
-        PrimitiveData data = withStrategy(GenerationStrategy.RANDOM)
-            .create(PrimitiveData.class);
-
-        assertThat(data, not(nullValue()));
-        assertThat(data.isBooleanValue(), not(nullValue()));
+    public void setByteValue(byte byteValue) {
+      this.byteValue = byteValue;
     }
 
-    @Test
-    public void should_allow_customize_primitive_type_fields() throws Exception {
-        PrimitiveData data = prepare(PrimitiveData.class).override("booleanValue", true).build();
-
-        assertThat(data, not(nullValue()));
-        assertThat(data.isBooleanValue(), is(true));
+    public short getShortValue() {
+      return shortValue;
     }
 
-    @Test
-    public void should_customize_override_fields_with_random_strategy() throws Exception {
-        PrimitiveData data = withStrategy(GenerationStrategy.RANDOM)
-            .prepare(PrimitiveData.class)
-            .override("booleanValue", true)
-            .build();
-
-        assertThat(data, not(nullValue()));
-        assertThat(data.isBooleanValue(), is(true));
+    public void setShortValue(short shortValue) {
+      this.shortValue = shortValue;
     }
 
-    @Test
-    public void should_create_object_with_primitive_wrapper_fields() throws Exception {
-        PrimitiveWrapperData data = create(PrimitiveWrapperData.class);
-
-        assertThat(data.getBooleanValue(), is(false));
+    public int getIntValue() {
+      return intValue;
     }
 
-    @Test
-    public void should_allow_customize_primitive_wrapper_type_fields() throws Exception {
-        PrimitiveWrapperData data = prepare(PrimitiveWrapperData.class).override("booleanValue", true).build();
-
-        assertThat(data.getBooleanValue(), is(true));
+    public void setIntValue(int intValue) {
+      this.intValue = intValue;
     }
 
-    public static class PrimitiveData {
-        private byte byteValue;
-        private short shortValue;
-        private int intValue;
-        private long longValue;
-        private float floatValue;
-        private double doubleValue;
-        private boolean booleanValue;
-        private char charValue;
-
-        public byte getByteValue() {
-            return byteValue;
-        }
-
-        public void setByteValue(byte byteValue) {
-            this.byteValue = byteValue;
-        }
-
-        public short getShortValue() {
-            return shortValue;
-        }
-
-        public void setShortValue(short shortValue) {
-            this.shortValue = shortValue;
-        }
-
-        public int getIntValue() {
-            return intValue;
-        }
-
-        public void setIntValue(int intValue) {
-            this.intValue = intValue;
-        }
-
-        public long getLongValue() {
-            return longValue;
-        }
-
-        public void setLongValue(long longValue) {
-            this.longValue = longValue;
-        }
-
-        public float getFloatValue() {
-            return floatValue;
-        }
-
-        public void setFloatValue(float floatValue) {
-            this.floatValue = floatValue;
-        }
-
-        public double getDoubleValue() {
-            return doubleValue;
-        }
-
-        public void setDoubleValue(double doubleValue) {
-            this.doubleValue = doubleValue;
-        }
-
-        public boolean isBooleanValue() {
-            return booleanValue;
-        }
-
-        public void setBooleanValue(boolean booleanValue) {
-            this.booleanValue = booleanValue;
-        }
-
-        public char getCharValue() {
-            return charValue;
-        }
-
-        public void setCharValue(char charValue) {
-            this.charValue = charValue;
-        }
+    public long getLongValue() {
+      return longValue;
     }
 
-    public static class PrimitiveWrapperData {
-        private Byte byteValue;
-        private Short shortValue;
-        private Integer intValue;
-        private Long longValue;
-        private Float floatValue;
-        private Double doubleValue;
-        private Boolean booleanValue;
-        private Character charValue;
-
-        public Byte getByteValue() {
-            return byteValue;
-        }
-
-        public void setByteValue(Byte byteValue) {
-            this.byteValue = byteValue;
-        }
-
-        public Short getShortValue() {
-            return shortValue;
-        }
-
-        public void setShortValue(Short shortValue) {
-            this.shortValue = shortValue;
-        }
-
-        public Integer getIntValue() {
-            return intValue;
-        }
-
-        public void setIntValue(Integer intValue) {
-            this.intValue = intValue;
-        }
-
-        public Long getLongValue() {
-            return longValue;
-        }
-
-        public void setLongValue(Long longValue) {
-            this.longValue = longValue;
-        }
-
-        public Float getFloatValue() {
-            return floatValue;
-        }
-
-        public void setFloatValue(Float floatValue) {
-            this.floatValue = floatValue;
-        }
-
-        public Double getDoubleValue() {
-            return doubleValue;
-        }
-
-        public void setDoubleValue(Double doubleValue) {
-            this.doubleValue = doubleValue;
-        }
-
-        public Boolean getBooleanValue() {
-            return booleanValue;
-        }
-
-        public void setBooleanValue(Boolean booleanValue) {
-            this.booleanValue = booleanValue;
-        }
-
-        public Character getCharValue() {
-            return charValue;
-        }
-
-        public void setCharValue(Character charValue) {
-            this.charValue = charValue;
-        }
+    public void setLongValue(long longValue) {
+      this.longValue = longValue;
     }
+
+    public float getFloatValue() {
+      return floatValue;
+    }
+
+    public void setFloatValue(float floatValue) {
+      this.floatValue = floatValue;
+    }
+
+    public double getDoubleValue() {
+      return doubleValue;
+    }
+
+    public void setDoubleValue(double doubleValue) {
+      this.doubleValue = doubleValue;
+    }
+
+    public boolean isBooleanValue() {
+      return booleanValue;
+    }
+
+    public void setBooleanValue(boolean booleanValue) {
+      this.booleanValue = booleanValue;
+    }
+
+    public char getCharValue() {
+      return charValue;
+    }
+
+    public void setCharValue(char charValue) {
+      this.charValue = charValue;
+    }
+  }
+
+  public static class PrimitiveWrapperData {
+
+    private Byte byteValue;
+    private Short shortValue;
+    private Integer intValue;
+    private Long longValue;
+    private Float floatValue;
+    private Double doubleValue;
+    private Boolean booleanValue;
+    private Character charValue;
+
+    public Byte getByteValue() {
+      return byteValue;
+    }
+
+    public void setByteValue(Byte byteValue) {
+      this.byteValue = byteValue;
+    }
+
+    public Short getShortValue() {
+      return shortValue;
+    }
+
+    public void setShortValue(Short shortValue) {
+      this.shortValue = shortValue;
+    }
+
+    public Integer getIntValue() {
+      return intValue;
+    }
+
+    public void setIntValue(Integer intValue) {
+      this.intValue = intValue;
+    }
+
+    public Long getLongValue() {
+      return longValue;
+    }
+
+    public void setLongValue(Long longValue) {
+      this.longValue = longValue;
+    }
+
+    public Float getFloatValue() {
+      return floatValue;
+    }
+
+    public void setFloatValue(Float floatValue) {
+      this.floatValue = floatValue;
+    }
+
+    public Double getDoubleValue() {
+      return doubleValue;
+    }
+
+    public void setDoubleValue(Double doubleValue) {
+      this.doubleValue = doubleValue;
+    }
+
+    public Boolean getBooleanValue() {
+      return booleanValue;
+    }
+
+    public void setBooleanValue(Boolean booleanValue) {
+      this.booleanValue = booleanValue;
+    }
+
+    public Character getCharValue() {
+      return charValue;
+    }
+
+    public void setCharValue(Character charValue) {
+      this.charValue = charValue;
+    }
+  }
 }

@@ -5,11 +5,12 @@ import io.github.dummiejava.dummie.configuration.GenerationStrategy;
 import io.github.dummiejava.dummie.generator.data.DataGenerator;
 import io.github.dummiejava.dummie.generator.field.FieldValueGenerator;
 import io.github.dummiejava.dummie.generator.field.impl.CustomTypeFieldValueGenerator;
+import java.util.Set;
 
 public class DefaultGenerator extends DataGenerator {
 
-  public DefaultGenerator(GenerationStrategy strategy, DataCache dataCache) {
-    super(strategy, dataCache);
+  public DefaultGenerator(GenerationStrategy strategy, DataCache dataCache, Set<String> randomFieldKeys, Set<Class<?>> randomFieldTypes) {
+    super(strategy, dataCache, randomFieldKeys, randomFieldTypes);
   }
 
   @Override
