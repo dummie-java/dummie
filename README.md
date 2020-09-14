@@ -12,7 +12,7 @@ TargetClass instance = Dummie.create(TargetClass.class);
 
 * Add Dependency
 ```groovy
-compile "io.github.dummie-java:dummie:{latestVersion}"
+compile "io.github.dummie-java:dummie:${latestVersion}"
 ```
 
 ##### Basic usage
