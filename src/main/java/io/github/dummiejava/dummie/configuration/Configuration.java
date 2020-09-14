@@ -107,14 +107,14 @@ public class Configuration {
 
   public DataGenerator getDataGenerator() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     if (this.dataGenerator != null) {
-      return dataGenerator.getDeclaredConstructor(GenerationStrategy.class, DataCache.class, Set.class, Set.class)
-          .newInstance(this.generationStrategy, getDataGenerator(), randomFieldKeys, randomFieldTypes);
+      return dataGenerator.getDeclaredConstructor(GenerationStrategy.class, DataCache.class, Set.class, Set.class, List.class)
+          .newInstance(this.generationStrategy, getDataGenerator(), randomFieldKeys, randomFieldTypes, fieldValueGenerators);
     }
     switch (this.cycleLogic) {
       case CYCLE:
-        return new DefaultGenerator(this.generationStrategy, getDataCache(), randomFieldKeys, randomFieldTypes);
+        return new DefaultGenerator(this.generationStrategy, getDataCache(), randomFieldKeys, randomFieldTypes, fieldValueGenerators);
       case LEVEL:
-        return new LevelGenerator(this.generationStrategy, getDataCache(), randomFieldKeys, randomFieldTypes, limit);
+        return new LevelGenerator(this.generationStrategy, getDataCache(), randomFieldKeys, randomFieldTypes, limit, fieldValueGenerators);
       default:
         throw new IllegalArgumentException();
     }

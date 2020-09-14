@@ -31,7 +31,8 @@ public abstract class DataGenerator {
   private final Set<String> randomFieldKeys;
   private final Set<Class<?>> randomFieldTypes;
 
-  public DataGenerator(GenerationStrategy strategy, DataCache dataCache, Set<String> randomFieldKeys, Set<Class<?>> randomFieldTypes) {
+  public DataGenerator(GenerationStrategy strategy, DataCache dataCache, Set<String> randomFieldKeys,
+      Set<Class<?>> randomFieldTypes, List<FieldValueGenerator> extraGenerators) {
     this.dataCache = dataCache;
     this.strategy = strategy;
 
@@ -40,6 +41,7 @@ public abstract class DataGenerator {
     this.randomFieldTypes = randomFieldTypes;
 
     addDefaultGenerators();
+    this.generators.addAll(extraGenerators);
   }
 
   private void addDefaultGenerators() {
