@@ -12,7 +12,7 @@ TargetClass instance = Dummie.create(TargetClass.class);
 
 * Add Dependency
 ```groovy
-compile "io.github.dummie-java:dummie:{latestVersion}"
+compile "io.github.dummie-java:dummie:${latestVersion}"
 ```
 
 ##### Basic usage
@@ -67,6 +67,13 @@ so all fields named **desc** and type is string should be filled value **"value"
 
 ```
 Employee dummieEmployee = Dummie.prepare().override(Long.class, 100L).create(Employee.class);
+```
+
+##### Use regex expression override fields
+* We can use regex expression to override fields like:
+```
+Employee dummieEmployee = Dummie.prepare().override(".*Time", new ZonedDateTime()).create(Employee.class);
+
 ```
 
 ##### Random fields

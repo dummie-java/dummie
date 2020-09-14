@@ -2,10 +2,12 @@ package io.github.dummiejava.dummie.cache.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public class KeyValueDataCache extends BasicDataCache {
 
-  private final Map<Class<?>, Map<String, Object>> keyValueCachedData;
+  private final Map<Class<?>, KeyValueCache> keyValueCachedData;
 
   public KeyValueDataCache() {
     keyValueCachedData = new HashMap<>();
@@ -18,13 +20,10 @@ public class KeyValueDataCache extends BasicDataCache {
       throw new ClassCastException(value + " cannot be cast to " + cacheDataType);
     }
     if (!keyValueCachedData.containsKey(cacheDataType)) {
-      keyValueCachedData.put(cacheDataType, new HashMap<String, Object>() {{
-        put(key, value);
-      }});
-    } else {
-      keyValueCachedData.get(cacheDataType).put(key, value);
+      KeyValueCache cache = new KeyValueCache();
+      keyValueCachedData.put(cacheDataType, cache);
     }
-
+    keyValueCachedData.get(cacheDataType).put(key, value);
   }
 
   @Override
@@ -35,14 +34,42 @@ public class KeyValueDataCache extends BasicDataCache {
 
   private <T> T getKeyValueCachedData(Class<T> dataType, String key) {
     Class<?> cacheDataType = normalize(dataType);
-    Map datas = keyValueCachedData.get(cacheDataType);
-    if (datas != null) {
-      return (T) getCachedValue(key, datas);
+    KeyValueCache cache = keyValueCachedData.get(cacheDataType);
+    if (cache != null) {
+      return (T) cache.get(key);
     }
     return null;
   }
 
-  private Object getCachedValue(String key, Map data) {
-    return data.get(key);
+  private class KeyValueCache {
+
+    private final Pattern isRegex = Pattern.compile("[^a-zA-Z0-9]");
+
+    private final Map<String, Object> keyMatchCache;
+    private final Map<String, Object> regexMatchCache;
+
+    public KeyValueCache() {
+      this.keyMatchCache = new HashMap<>();
+      this.regexMatchCache = new HashMap<>();
+    }
+
+    public void put(String key, Object value) {
+      if (isRegex.matcher(key).find()) {
+        regexMatchCache.put(key, value);
+      } else {
+        keyMatchCache.put(key, value);
+      }
+    }
+
+    public Object get(String key) {
+      if (keyMatchCache.containsKey(key)) {
+        return keyMatchCache.get(key);
+      }
+      return regexMatchCache.entrySet()
+          .stream()
+          .filter(entry -> Pattern.matches(entry.getKey(), key))
+          .findFirst()
+          .map(Entry::getValue).orElse(null);
+    }
   }
 }
