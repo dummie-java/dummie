@@ -28,7 +28,7 @@ public class StringTest {
 
     @Test
     public void should_allow_customize_string_type_fields() throws Exception {
-        StringData data = Dummie.prepare(StringData.class).override("stringValue", "test").build();
+        StringData data = Dummie.prepare().override("stringValue", "test").create(StringData.class);
 
         assertThat(data.getStringValue(), is("test"));
     }

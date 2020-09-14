@@ -20,7 +20,7 @@ public class OverrideTest {
 
     @Test
     public void should_prepare_class_and_success_cached() throws Exception {
-        NestingData1 nestingData1 = Dummie.prepare(NestingData1.class).override(String.class, "abc").build();
+        NestingData1 nestingData1 = Dummie.prepare().override(String.class, "abc").create(NestingData1.class);
 
         assertThat(nestingData1, not(nullValue()));
         assertThat(nestingData1.getName(), equalTo("abc"));
@@ -30,10 +30,10 @@ public class OverrideTest {
 
     @Test
     public void should_prepare_class_and_field_then_first_lookup_field() throws Exception {
-        NestingData1 nestingData1 = Dummie.prepare(NestingData1.class)
+        NestingData1 nestingData1 = Dummie.prepare()
             .override(String.class, "abc")
             .override("name", "edf")
-            .build();
+            .create(NestingData1.class);
 
         assertThat(nestingData1, not(nullValue()));
         assertThat(nestingData1.getName(), equalTo("edf"));
@@ -43,10 +43,10 @@ public class OverrideTest {
 
     @Test
     public void should_prepare_class_and_another_same_type_field_then_give_class_cache() throws Exception {
-        NestingData1 nestingData1 = Dummie.prepare(NestingData1.class)
+        NestingData1 nestingData1 = Dummie.prepare()
             .override(String.class, "abc")
             .override("name1", "edf")
-            .build();
+            .create(NestingData1.class);
 
         assertThat(nestingData1, not(nullValue()));
         assertThat(nestingData1.getName(), equalTo("abc"));

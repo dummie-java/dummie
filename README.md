@@ -58,7 +58,7 @@ Maybe you want some fields special in the dummy Employee.
 * Suppose in next test, we want all asset name has same value, so we can use `override` method:
 
 ```
-Employee dummieEmployee = Dummie.prepare(Employee.class).override("desc", "value").build();
+Employee dummieEmployee = Dummie.prepare().override("desc", "value").create(Employee.class);
 ```
 
 so all fields named **desc** and type is string should be filled value **"value"**, the type based on `override` second parameter type.
@@ -66,14 +66,14 @@ so all fields named **desc** and type is string should be filled value **"value"
 * If you want all fields with the type `Long` to be set 100L, you can:
 
 ```
-Employee dummieEmployee = Dummie.prepare(Employee.class).override(Long.class, 100L).build();
+Employee dummieEmployee = Dummie.prepare().override(Long.class, 100L).create(Employee.class);
 ```
 
 ##### Random fields
 * Suppose we want all **id** would be random value, we can use `random` method:
 
 ```
-Employee dummieEmployee = Dummie.prepare(Employee.class).random("id").build();
+Employee dummieEmployee = Dummie.prepare().random("id").create(Employee.class);
 ```
 
 so all fields named **id** would filled random value.
@@ -81,18 +81,28 @@ so all fields named **id** would filled random value.
 * Like `override`, random can also special a kind of type:
 
 ```
-Employee dummieEmployee = Dummie.prepare(Employee.class).random(String.class).build();
+Employee dummieEmployee = Dummie.prepare().random(String.class).create(Employee.class);
+```
+
+##### Add custom FieldValueGenerator
+```
+Employee dummieEmployee = Dummie.prepare()
+  .valueGenerator(someGenerator)
+	.create(Employee.class);
 ```
 
 ##### Change generate strategy
 
 **Dummie** default use static value for data generate. If you want all fields value use random value generator, you should set GenerationStrategy:
 ```
-Employee dummieEmployee = Dummie.withStrategy(GenerationStrategy.RANDOM)
-	.prepare(Employee.class)
-	.build();
+Employee dummieEmployee = Dummie.withStrategy(GenerationStrategy.RANDOM).create(Employee.class);
 ```
 
+##### You can also override DataCache and DataGenerator by yourself
+```
+Configuration configuration = new Configuration(cycleLogic, strategy, dataCache, dataGenerator);
+Employee dummieEmployee = Dummie.withConfiguration(configuration).create(Employee.class);
+```
 
 ### Advance usage
 If the target class fields have cycle used, **Dummie** has two logic to deal with.
@@ -103,7 +113,6 @@ And **Dummie** also support generate by cycle deep, if you want use you can set
 
 ```
 Employee dummieEmployee = Dummie.cycleLogic(CycleLogic.LEVEL)
-	.withFloor(floor) // Optional, set cycle deep level, default value is 2.
-	.prepare(Employee.class)
-	.build();
+	.withFloor(limit) // Optional, set cycle deep level, default value is 2.
+	.create(Employee.class);
 ```
